@@ -34,101 +34,155 @@
 
     <div id="why" class="step slide" data-x="0" data-y="-1000">
         <div class="vcenter">
-            <div class="slide-header">why?</div>
+            <div class="slide-header">Building Concurrent Systems</div>
 
             <div class="slide-content">
+            Building concurrent systems is no easy feat. While designing, many times we overlook following issues
                 <ul class="lv0_indent">
-                    <li>tests (<a href="https://code.google.com/p/mockito/">mockito</a>, <a href="http://pitest.org/">pitest</a>)</li>
-                    <li>static analysis (<a href="http://findbugs.sourceforge.net/">findbugs</a>)</li>
-                    <li>aop (logging, security etc.)</li>
-                    <li>new languages on jvm 
-                        (<a href="http://www.scala-lang.org/">scala</a>, 
-                        <a href="http://groovy.codehaus.org/">groovy</a>, 
-                        <a href="http://jruby.org/">jruby</a>)
+                    <li> Deadlock </li> 
+                    <li>Starvation, Livelock </li>
+                    <li>Under specification (unexpected reception of messages)</li>
+                    <li>Over specification (dead code)  </li>
+                    <li> Violation of constraints
+                    	  <ul class="lv0_indent">
+                    	  <li>buffer overruns </li>
+                    	  <li> array violations</li>
+                    	  </ul>
+                     </li>
+                    <li>Assumptions about speed 
+                    	<ul class="lv0_indent">
+                    	<li>logical correctness vs.
+real-time performance </li>
+                    	  </ul>
                     </li>
-                    <li>new cool tools (<a href="http://zeroturnaround.com/software/jrebel">jrebel</a>)
+                    
+                    
                 </ul>
             </div>
         </div>
     </div>
 
+    <div id="intro" class="step slide" data-x="0" data-y="-1000">
+        <div class="vcenter">
+            <div class="slide-header">Model Checking</div>
+
+            <div class="slide-content">
+            An automated technique that, given a finite-state model of a system and a
+            logical property, systematically checks whether this property holds for
+            (a given initial state in) that model. <br>
+            A model checker principally follows two approaches: <br>
+                <ul class="lv0_indent">
+                    <li> <b> Verification </b> Tries to ascertain the correctness of detailed model <i>M</i> of system </li> 
+                    <li><b> Debugging </b> Searches for counter example, dissatisfying the property of system</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+        <div id="spin" class="step slide" data-x="0" data-y="-1000">
+        <div class="vcenter">
+            <div class="slide-header">SPIN</div>
+
+            <div class="slide-content">
+            <b>SPIN</b>=(<i>Simple Promella Interpreter</i>) <br>
+            is a model checker, that can verify logical consistency of concurrent systems, when defined in promella. <br> <br> 
+            Promella(<i>Protocol/Process Meta language </i>) is a modelling language in which any generic concurrent system can be described.  
+                <ul class="lv0_indent">
+                    <li> allows the dynamic creation of concurrent process  </li> 
+                    <li>communication via message channels can be defined to be
+                    <ul class="lv0_indent">
+                    <li>Synchronous  </li>
+                    <li>Asynchronous </li>
+                    </ul> 
+                    </li>
+                    <li>Specification language to describe finite-state system </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="use-case" class="step slide" data-x="0" data-y="-1000">
+        <div class="vcenter">
+            <div class="slide-header">SPIN Use Cases</div>
+
+            <div class="slide-content">
+            SPIN has been incorporated in many interesting applications   
+                <ul class="lv0_indent">
+                    <li> <a href="http://www.springerlink.com/content/a0483w508l737447/">Bluespec System Verilog specification of a Vending Machine Controller and a Cross Bar Switch.</a> </li>
+                    <li> <a href="http://infoscience.epfl.ch/record/98703">Harmony Multiprocessor Real-Time Kernel</a>  </li>
+                    <li> <a href="http://www.cs.utah.edu/%7Etullmann/flux/verify.html">Fluke IPC Mechanism</a>  </li>
+                    <li> <a href="http://lfm.iti.uni-karlsruhe.de/371.php">Leader election algorithms for anonymous rings</a>  </li> 
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
     <div id="example-src" class="step slide" data-x="0" data-y="-2000">
-        <div class="slide-header">bytecode sample</div>
-        <div id="bytecode-sample" class="slide-content">
-            <div class="src-java">
+        <div class="slide-header">Spin Example</div>
+        <div id="spin-example" class="slide-content">
+            <div class="src-c">
 <pre style="color:#586e75">
-<span style="color:#a57800">public</span> <span style="color:#a57800">class</span> <span style="color:#268bd2">HelloWorld</span> {
-    <span style="color:#a57800">public</span> <span style="color:#a57800">static</span> <span style="color:#073642;">void</span> <span style="color:#268bd2">main</span>(<span style="color:#073642">String</span>[] args) {
-        <span style="color:#073642">System</span><span style="color:#859900">.</span>out<span style="color:#859900">.</span>println(<span style="color:#269186"><span style="color:#c60000">"</span>Woohoo!<span style="color:#c60000">"</span></span>);
-    }
+active proctype P()
+{
+	int value=123; 
+	int reversed; 
+	reversed=(value%10)*100+((value/10)%10)*10+(value/100);
+	printf("%d %d\n",value,reversed)
 }
 </pre>
             </div>
+            <div class="sh-cmd">
+         $ spin HelloWorld.pml
         </div>
-        <div class="sh-cmd">
-         $ javac HelloWorld.java
         </div>
+        
     </div>
   
-    <div id="example-bytecode-hex" class="step slide" data-x="0" data-y="-2000">
+    <div id="promela" class="step slide" data-x="0" data-y="-1000">
+        <div class="vcenter">
+            <div class="slide-header">Promela Model</div>
 
-        <div id="hex">
-<pre>
-00000000  ca fe ba be 00 00 00 33  00 15 0a 00 04 00 11 09  |.......3........|
-00000010  00 03 00 12 07 00 13 07  00 14 01 00 05 66 69 65  |.............fie|
-00000020  6c 64 01 00 01 49 01 00  06 3c 69 6e 69 74 3e 01  |ld...I...&lt;init&gt;.|
-00000030  00 03 28 29 56 01 00 04  43 6f 64 65 01 00 0f 4c  |..()V...Code...L|
-00000040  69 6e 65 4e 75 6d 62 65  72 54 61 62 6c 65 01 00  |ineNumberTable..|
-00000050  08 67 65 74 46 69 65 6c  64 01 00 03 28 29 49 01  |.getField...()I.|
-00000060  00 08 73 65 74 46 69 65  6c 64 01 00 04 28 49 29  |..setField...(I)|
-00000070  56 01 00 0a 53 6f 75 72  63 65 46 69 6c 65 01 00  |V...SourceFile..|
-00000080  0d 4e 65 77 43 6c 61 73  73 2e 6a 61 76 61 0c 00  |.NewClass.java..|
-00000090  07 00 08 0c 00 05 00 06  01 00 08 4e 65 77 43 6c  |...........NewCl|
-000000a0  61 73 73 01 00 10 6a 61  76 61 2f 6c 61 6e 67 2f  |ass...java/lang/|
-000000b0  4f 62 6a 65 63 74 00 21  00 03 00 04 00 00 00 01  |Object.!........|
-000000c0  00 02 00 05 00 06 00 00  00 03 00 01 00 07 00 08  |................|
-000000d0  00 01 00 09 00 00 00 1d  00 01 00 01 00 00 00 05  |................|
-000000e0  2a b7 00 01 b1 00 00 00  01 00 0a 00 00 00 06 00  |*...............|
-000000f0  01 00 00 00 01 00 01 00  0b 00 0c 00 01 00 09 00  |................|
-00000100  00 00 1d 00 01 00 01 00  00 00 05 2a b4 00 02 ac  |...........*....|
-00000110  00 00 00 01 00 0a 00 00  00 06 00 01 00 00 00 05  |................|
-00000120  00 01 00 0d 00 0e 00 01  00 09 00 00 00 22 00 02  |............."..|
-00000130  00 02 00 00 00 06 2a 1b  b5 00 02 b1 00 00 00 01  |......*.........|
-00000140  00 0a 00 00 00 0a 00 02  00 00 00 09 00 05 00 0a  |................|
-00000150  00 01 00 0f 00 00 00 02  00 10                    |..........|
-</pre>
-
-        </div>
-    </div>
-   
-    <div id="example-bytecode" class="step slide" data-x="0" data-y="-2000">
-        <div class="slide-content">
-            <div class="sh-cmd">
-                $ javap -c HelloWorld.class
+            <div class="slide-content">
+           Promela is structured into following    
+                <ul class="lv0_indent">
+                    <li>type declaration </li>
+                    <li>channel declaration</li>
+                    <li>global variable declaration</li>
+                    <li>process declarations</li>
+                    <li>init process</li>
+                </ul>
+                
             </div>
-
-<div class="src-java">
-<pre style="color:#586e75"><span style="color:#a57800">public</span> <span style="color:#a57800">class</span> <span style="color:#268bd2">HelloWorld</span> {
-  <span style="color:#a57800">public</span> <span style="color:#268bd2">HelloWorld</span>();
-    <span style="color:#073642;font-weight:700">Code</span><span style="color:#859900">:</span>
-       <span style="color:#d33682">0</span><span style="color:#859900">:</span> aload_0       
-       <span style="color:#d33682">1</span>: invokespecial #<span style="color:#d33682">1</span> <span style="color:#93a1a1">// Method java/lang/Object."&lt;init&gt;":()V</span>
-       <span style="color:#d33682">4</span>: return        
-
-  <span style="color:#a57800">public</span> <span style="color:#a57800">static</span> <span style="color:#073642;font-weight:700">void</span> <span style="color:#268bd2">main</span>(<span style="color:#073642;font-weight:700">java.lang.String</span>[]);
-    <span style="color:#073642;font-weight:700">Code</span><span style="color:#859900">:</span>
-       <span style="color:#d33682">0</span><span style="color:#859900">:</span> getstatic     #<span style="color:#d33682">2</span> <span style="color:#93a1a1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
-       <span style="color:#d33682">3</span><span style="color:#859900">:</span> ldc           #<span style="color:#d33682">3</span> <span style="color:#93a1a1">// String Woohoo!</span>
-       <span style="color:#d33682">5</span>: invokevirtual #<span style="color:#d33682">4</span> 
-                  <span style="color:#93a1a1">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span>
-       <span style="color:#d33682">8</span><span style="color:#859900">:</span> return
-}
-</pre>
-</div>
-
         </div>
     </div>
+    <div id="promela-struct" class="step slide" data-x="0" data-y="-1000">
+        <div class="vcenter">
+            <div class="slide-header">Promela Structure</div>
 
+            <div class="slide-content">
+            Basic commands 
+                <pre>
+				assignment ------ always executable
+				expression ------ executable if non-zero (i.e., true)
+				send (ch!) ----- executable if channel ch is not full
+				receive (ch?) --- executable if channel ch is not empty
+				assert((expr))-- always executable
+				printf -------- always executable 
+				skip --------- always executable (equivalent to 1 or true)
+				timeout ------- variable, true if no other statement is executable
+				if ------------ executable if at least one guard is executable
+				do ------------ executable if at least one guard is executable
+				atomic { ... } ----- executable if first statement is executable
+				d_step { ... } ----- executable if first statement is executable
+				goto ---------- jump to lablel
+				break --------- exit do-statement
+                </pre>
+            </div>
+        </div>
+    </div>
+    
+    
+    
     <div id="example-bytecode-ctor" class="step overlay" data-x="0" data-y="-2000">
         <div id="mark-default-ctor" class="mark"></div> 
     </div>
