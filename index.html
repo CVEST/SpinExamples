@@ -193,7 +193,7 @@ template: inverse
 name: how
 .left-column[
 ## Spin
-### Semantics
+### - Semantics
 ]
 .right-column[
 **SPIN a.k.a Simple Promella Interpreter** 
@@ -212,7 +212,7 @@ Promella basically has following attributes
 name: how
 .left-column[
 ## Spin
-### Semantics
+### - Semantics
 ]
 .right-column[
 Promella Commands 
@@ -255,7 +255,130 @@ active proctype P()
 ```
 ]
 
+
 ---
+.left-column[
+## Spin
+#### State Explosion
+
+]
+.right-column[
+```promella
+init {  /* file: stateexpo.pml */
+        byte i = 0;
+        do
+        :: i = i+1;
+        :: i = i+2;
+        od
+}
+```
+```bash
+ $ spin -p -l stateexpo.pml # run simulation
+ $ spin -a stateexpo.pml 
+ $ gcc pan.c -o pan
+ $ ./pan  # verifier 
+```
+]
+---
+.left-column[
+## Spin
+#### State Reachability
+
+]
+.right-column[
+```promella
+#define N	2
+	init {	
+		chan dummy = [N] of { byte };
+		do
+		:: dummy!85
+		:: dummy!170
+		od
+	}
+```
+```bash
+ $ spin -m -a sreach.pml #use -m to ignore buffer overflow
+ $ gcc -o pan pan.c
+ $ ./pan
+```
+]
+---
+.left-column[
+## Spin
+#### State Reachability Analysis
+
+]
+.right-column[
+Write down:
++ T:* the sum of user time plus system time for the run*
++ S: *the number of states stored*
++ G: *the number of total number of states generated and analyzed*
++ V: *the vector-size (the amount of memory needed to store one state)*
+
+**G/T** gives you a measure for the efficiency of the run, and
+**S*V** gives you the amount of memory that is needed to store
+the state space without compression.
+
+Time also depends on storage function:
+```bash
+ $ time pan -w10 #hash table with 2^10 slots
+ $ time pan -w2 #hash table with 2^2 slots
+```
+1. Check number of hash conflicts 
+]
+---
+.left-column[
+## Spin
+#### State Reachability Analysis Contd.
+
+]
+.right-column[
+Checking things in bitstate storage for N=20
+```bash
+$ spin -m -a sreach.pml		# as before
+$ gcc -DBITSTATE -o pan pan.c	# different
+$ time ./pan
+
+```
+1. Check number of hash conflicts 
+]
+---
+.left-column[
+## Spin
+#### Mutulal Exclusion Problem 
+
+]
+.right-column[
+Verification of mutual exclusion problem is given by following code 
+```promella
+ #define true	1                      
+   #define false	0
+   bool flag[2];
+   bool turn;
+   active [2] proctype user()
+   {	flag[_pid] = true;
+   	turn = _pid;
+   	(flag[1-_pid] == false || turn == 1-_pid);
+   crit:	skip;	/* critical section */
+  	flag[_pid] = false
+  }
+```
+]
+---
+.left-column[
+## Spin
+#### Verification of protocol 
+
+]
+.right-column[
+<img src="img/protocol.gif">
+We want to check the following property
+
+** ''Every message fetched by A is received error-free at least once and accepted at most once by B.'' ** 
+
+]
+---
+
 name: questions
 template: inverse
 ## Questions??
