@@ -193,6 +193,29 @@ template: inverse
 name: how
 .left-column[
 ## Spin
+### - Overview
+]
+.right-column[
+Takes a model of system design and requirement as input, spin checks model vs requirement and if not 
+met, then produces a counter example. 
+
++ Focuses on proving correctness of process interactions 
++ Not much focus on on internal computations of process 
++ Communication
+	 + Synchronous primitives 
+	 + Asynchronous message passing through buffered channels 
+	 + Access to shared variables
+
+####Methodology 
++ Express unambiguous model 
++ Express general correctness requirements as LTL formula 
+
+]
+
+---
+name: how
+.left-column[
+## Spin
 ### - Semantics
 ]
 .right-column[
