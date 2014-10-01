@@ -1,4 +1,4 @@
- #define true	1                      /* mutulalEx.pml */
+#define true	1                      /* mutulalEx.pml */
 #define false	0
 bool flag[2];
 bool turn;

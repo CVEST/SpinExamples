@@ -1,3 +1,8 @@
+
+mtype = { msg0, msg1, ack0, ack1 }
+chan sender = [1] of { mtype };
+chan receiver = [1] of { mtype };
+
 active proctype Sender()
 {
 	do
@@ -41,19 +46,16 @@ active proctype Receiver()
 		:: receiver?msg0 -> 
 			sender!ack0; break;
 		:: receiver?msg1 ->
-			server!ack1
+			sender!ack1
 		od
 
 		do
 		:: receiver?msg1 -> 
 			sender!ack1; break;
 		:: receiver?msg0 ->
-			server!ack0
+			sender!ack0
 		od
 	od
 }
 
-mtype = { msg0, msg1, ack0, ack1 }
-chan sender = [1] of { mtype };
-chan receiver = [1] of { mtype };
 
