@@ -374,27 +374,51 @@ $ time ./pan
 .right-column[
 Verification of mutual exclusion problem is given by following code 
 ```promella
- #define true	1                      
-   #define false	0
-   bool flag[2];
-   bool turn;
-   active [2] proctype user()
-   {	flag[_pid] = true;
-   	turn = _pid;
-   	(flag[1-_pid] == false || turn == 1-_pid);
-   crit:	skip;	/* critical section */
-  	flag[_pid] = false
-  }
+ #define true    1                      /* mutulalEx.pml */
+#define false   0   
+bool flag[2];
+bool turn;
+byte ncrit;
+int count=0;
+active [2] proctype user()
+{
+        assert(_pid==0 || _pid==1);
+looper: 
+        flag[_pid] = true;
+        turn = _pid;
+        (flag[1-_pid] == false || turn == 1-_pid);
+        ncrit++;
+        assert(ncrit==1);
+        ncrit--;
+
+        flag[_pid] = false;
+        goto looper;
+
+}
 ```
 ]
 ---
 .left-column[
 ## Spin
-#### Verification of protocol 
+#### Alternating Bit Protocol 
 
 ]
 .right-column[
-<img src="img/protocol.gif">
++ Two processes want to communicate.
++ They want acknowledge of received messages
++ Sending window of one message
++ Each message is identified by one bit
++ Alternating values of the identifier
+
+]
+---
+.left-column[
+## Spin
+#### Alternating Bit Protocol 
+
+]
+.right-column[
+<img src="img/1.png" height="480px" width="540px">
 We want to check the following property
 
 ** ''Every message fetched by A is received error-free at least once and accepted at most once by B.'' ** 
